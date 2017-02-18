@@ -1,0 +1,5 @@
+.vs/
+*.opendb
+*.db
+*.user
+clip/x64/
