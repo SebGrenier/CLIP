@@ -15,25 +15,25 @@ namespace clip { namespace math {
 		using value_type_ptr = value_type*;
 		using const_value_type_ptr = const value_type*;
 
-		Matrix(size_type nbRows, size_type nbCols, const_value_type_ptr)
+		Matrix(const size_type nbRows, const size_type nbCols, const_value_type_ptr data)
 			: _data(nullptr)
 			, _nbRows(nbRows)
 			, _nbCols(nbCols)
 		{
 			// TODO: might overflow!
-			auto length = nbRows * nbCols;
+			const auto length = nbRows * nbCols;
 			_data = new value_type[length];
 			if (data != nullptr)
 				std::copy(data, data + length, _data);
 		}
 
-		Matrix(size_type nbRows, size_type nbCols, value_type initValue)
+		Matrix(const size_type nbRows, const size_type nbCols, value_type initValue)
 			: _data(nullptr)
 			, _nbRows(nbRows)
 			, _nbCols(nbCols)
 		{
 			// TODO: might overflow!
-			auto length = nbRows * nbCols;
+			const auto length = nbRows * nbCols;
 			_data = new value_type[length];
 			std::fill(_data, _data + length, initValue);
 		}
@@ -43,11 +43,12 @@ namespace clip { namespace math {
 			, _nbRows(mat.nbRows())
 			, _nbCols(mat.nbCols())
 		{
-			auto mat_data = mat.data();
-			if (mat_data != nullptr) {
-				auto length = _nbRows * _nbCols;
+			// TODO: Shallow copy with deep copy on write
+			auto matData = mat.data();
+			if (matData != nullptr) {
+				const auto length = _nbRows * _nbCols;
 				_data = new value_type[length];
-				std::copy(mat_data, mat_data + length, _data);
+				std::copy(matData, matData + length, _data);
 			}
 		}
 
@@ -57,8 +58,8 @@ namespace clip { namespace math {
 		size_type nbRows() const { return _nbRows; }
 		size_type nbCols() const { return _nbCols; }
 
-		value_type_ptr operator [] (size_type rowIndex) { return _data[rowIndex * _nbCols]; }
-		const_value_type_ptr operator [] (size_type rowIndex) const { return _data[rowIndex * _nbCols]; }
+		value_type_ptr operator [] (const size_type rowIndex) { return _data[rowIndex * _nbCols]; }
+		const_value_type_ptr operator [] (const size_type rowIndex) const { return _data[rowIndex * _nbCols]; }
 
 	private:
 		T* _data;
